@@ -1,18 +1,9 @@
-- name: Install and start Nginx on Amazon Linux
+- name: Test connection and install Nginx
   hosts: all
   become: yes
   tasks:
-    - name: Install Python3 (if not already)
-      raw: |
-        command -v python3 || sudo yum install -y python3
-
     - name: Ensure Nginx is installed
-      yum:
+      apt:
         name: nginx
         state: present
-
-    - name: Start and enable Nginx
-      service:
-        name: nginx
-        state: started
-        enabled: yes
+        update_cache: yes
