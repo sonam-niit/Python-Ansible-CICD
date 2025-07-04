@@ -1,9 +1,22 @@
-- name: Test connection and install Nginx
+- name: Install and start Nginx
   hosts: all
   become: yes
   tasks:
-    - name: Ensure Nginx is installed
+    - name: Ensure Python is installed
+      raw: |
+        command -v python3 || (apt update && apt install -y python3)
+
+    - name: Update APT cache
+      apt:
+        update_cache: yes
+
+    - name: Install Nginx
       apt:
         name: nginx
         state: present
-        update_cache: yes
+
+    - name: Start and enable Nginx
+      service:
+        name: nginx
+        state: started
+        enabled: yes
